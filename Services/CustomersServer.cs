@@ -21,18 +21,18 @@ public class CustomersService
             csi5112BackEndDataBaseSettings.Value.CustomersCollectionName);
     }
 
-    public async Task<List<Customer>> GetAsync() =>
+    public async Task<List<Customer>> GetAllCustomers() =>
         await _customersCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Customer?> GetAsync(string id) =>
+    public async Task<Customer?> GetCustomerByID(string id) =>
         await _customersCollection.Find(x => x.customer_id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(Customer newCustomer) =>
+    public async Task CreateNewCustomer(Customer newCustomer) =>
         await _customersCollection.InsertOneAsync(newCustomer);
 
-    public async Task UpdateAsync(string id, Customer updatedCustomer) =>
+    public async Task UpdateCustomer(string id, Customer updatedCustomer) =>
         await _customersCollection.ReplaceOneAsync(x => x.customer_id == id, updatedCustomer);
 
-    public async Task RemoveAsync(string id) =>
+    public async Task RemoveCustomer(string id) =>
         await _customersCollection.DeleteOneAsync(x => x.customer_id == id);
 }

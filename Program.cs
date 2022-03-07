@@ -7,8 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.Configure<CSI5112BackEndDataBaseSettings>(builder.Configuration.GetSection("CSI5112BackendDataBase"));
 
-builder.Services.AddSingleton<CustomersService >();
-builder.Services.AddSingleton<ProductsService >();
+builder.Services.AddSingleton<CustomersService>();
+builder.Services.AddSingleton<ProductsService>();
+builder.Services.AddSingleton<CartItemsService>();
+builder.Services.AddSingleton<MerchantsService>();
+builder.Services.AddSingleton<ShippingAddressService>();
+builder.Services.AddSingleton<SalesOrdersService>();
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

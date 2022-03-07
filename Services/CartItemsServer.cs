@@ -21,18 +21,18 @@ public class CartItemsService
             csi5112BackEndDataBaseSettings.Value.CartItemsCollectionName);
     }
 
-    public async Task<List<CartItem>> GetAsync() =>
+    public async Task<List<CartItem>> GetAllCartItem() =>
         await _cartItemsCollection.Find(_ => true).ToListAsync();
 
-    public async Task<CartItem?> GetAsync(string id) =>
+    public async Task<CartItem?> GetCartItemByID(string id) =>
         await _cartItemsCollection.Find(x => x.item_id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(CartItem newCartItem) =>
+    public async Task CreateNewCartItem(CartItem newCartItem) =>
         await _cartItemsCollection.InsertOneAsync(newCartItem);
 
-    public async Task UpdateAsync(string id, CartItem updatedCartItem) =>
+    public async Task UpdateCartItem(string id, CartItem updatedCartItem) =>
         await _cartItemsCollection.ReplaceOneAsync(x => x.item_id == id, updatedCartItem);
 
-    public async Task RemoveAsync(string id) =>
+    public async Task RemoveCartItem(string id) =>
         await _cartItemsCollection.DeleteOneAsync(x => x.item_id == id);
 }

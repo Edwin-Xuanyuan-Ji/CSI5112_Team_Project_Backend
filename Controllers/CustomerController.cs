@@ -15,12 +15,12 @@ public class CustomersController : ControllerBase
 
     [HttpGet]
     public async Task<List<Customer>> Get() =>
-        await _CustomersService.GetAsync();
+        await _CustomersService.GetAllCustomers();
 
     [HttpGet("{id:length(24)}")]
     public async Task<ActionResult<Customer>> Get(string id)
     {
-        var customer = await _CustomersService.GetAsync(id);
+        var customer = await _CustomersService.GetCustomerByID(id);
 
         if (customer is null)
         {
@@ -33,7 +33,7 @@ public class CustomersController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Post(Customer newCustomer)
     {
-        await _CustomersService.CreateAsync(newCustomer);
+        await _CustomersService.CreateNewCustomer(newCustomer);
 
         return CreatedAtAction(nameof(Get), new { id = newCustomer.customer_id }, newCustomer);
     }
@@ -41,7 +41,7 @@ public class CustomersController : ControllerBase
     [HttpPut("{id:length(24)}")]
     public async Task<IActionResult> Update(string id, Customer updatedCustomer)
     {
-        var Customer = await _CustomersService.GetAsync(id);
+        var Customer = await _CustomersService.GetCustomerByID(id);
 
         if (Customer is null)
         {
@@ -50,7 +50,7 @@ public class CustomersController : ControllerBase
 
         updatedCustomer.customer_id = Customer.customer_id;
 
-        await _CustomersService.UpdateAsync(id, updatedCustomer);
+        await _CustomersService.UpdateCustomer(id, updatedCustomer);
 
         return NoContent();
     }
@@ -58,14 +58,14 @@ public class CustomersController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<IActionResult> Delete(string id)
     {
-        var Customer = await _CustomersService.GetAsync(id);
+        var Customer = await _CustomersService.GetCustomerByID(id);
 
         if (Customer is null)
         {
             return NotFound();
         }
 
-        await _CustomersService.RemoveAsync(id);
+        await _CustomersService.RemoveCustomer(id);
 
         return NoContent();
     }
