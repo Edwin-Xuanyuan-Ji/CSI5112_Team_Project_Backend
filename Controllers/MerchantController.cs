@@ -17,7 +17,7 @@ public class MerchantsController : ControllerBase
     public async Task<List<Merchant>> Get() =>
         await _MerchantsService.GetAllMerchant();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Merchant>> Get(string id)
     {
         var merchant = await _MerchantsService.GetMerchantByID(id);
@@ -30,7 +30,7 @@ public class MerchantsController : ControllerBase
         return merchant;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Post(Merchant newMerchant)
     {
         await _MerchantsService.CreateNewMerchant(newMerchant);
@@ -38,7 +38,7 @@ public class MerchantsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newMerchant.merchant_id }, newMerchant);
     }
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(string id, Merchant updatedMerchant)
     {
         var Merchant = await _MerchantsService.GetMerchantByID(id);
@@ -55,7 +55,7 @@ public class MerchantsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var Merchant = await _MerchantsService.GetMerchantByID(id);

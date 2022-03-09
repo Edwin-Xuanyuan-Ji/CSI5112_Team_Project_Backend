@@ -17,7 +17,7 @@ public class CustomersController : ControllerBase
     public async Task<List<Customer>> Get() =>
         await _CustomersService.GetAllCustomers();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<Customer>> Get(string id)
     {
         var customer = await _CustomersService.GetCustomerByID(id);
@@ -30,7 +30,7 @@ public class CustomersController : ControllerBase
         return customer;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Post(Customer newCustomer)
     {
         await _CustomersService.CreateNewCustomer(newCustomer);
@@ -38,7 +38,7 @@ public class CustomersController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newCustomer.customer_id }, newCustomer);
     }
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(string id, Customer updatedCustomer)
     {
         var Customer = await _CustomersService.GetCustomerByID(id);
@@ -55,7 +55,7 @@ public class CustomersController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var Customer = await _CustomersService.GetCustomerByID(id);

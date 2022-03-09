@@ -17,7 +17,7 @@ public class SalesOrdersController : ControllerBase
     public async Task<List<SalesOrder>> Get() =>
         await _SalesOrdersService.GetAllSalesOrders();
 
-    [HttpGet("{id:length(24)}/{role:length(24)}")]
+    [HttpGet("{id}/{role}")]
     public async Task<ActionResult<List<SalesOrder>>> Get(string id, string role)
     {
         var salesOrder = new List<SalesOrder>();
@@ -40,7 +40,7 @@ public class SalesOrdersController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newSalesOrder.order_id }, newSalesOrder);
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var SalesOrder = await _SalesOrdersService.GetSalesOrdersByID(id);

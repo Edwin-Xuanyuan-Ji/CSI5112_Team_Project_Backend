@@ -13,14 +13,19 @@ public class ProductsController : ControllerBase
     public ProductsController(ProductsService ProductsService) =>
         _ProductsService = ProductsService;
 
-    [HttpGet]
-    public async Task<List<Product>> Get() =>
-        await _ProductsService.GetAllProducts();
+    [HttpGet("all")]
+    public async Task<ActionResult<List<Product>>> Get() {
+        var product = await _ProductsService.GetAllProducts();
+        return product;
+    }
 
-    [HttpGet("{id:length(24)}")]
-    public async Task<ActionResult<List<Product>>> Get(string owner)
+    [HttpGet("filter/{owner_id}/{input}/{priceSort}/{location}/{category}")]
+    public async Task<ActionResult<List<Product>>> Get(string owner_id, string input, string priceSort, string location, string category)
     {
-        var product = await _ProductsService.GetProductsByMerchant(owner);
+        String[] locations = location.Split('_');
+        String[] categories = category.Split('_');
+        
+        var product = await _ProductsService.GetProductsByMerchant(owner_id, input == "#" ? "" : input, priceSort, locations, categories);
 
         if (product is null)
         {
@@ -30,7 +35,23 @@ public class ProductsController : ControllerBase
         return product;
     }
 
-    [HttpPost]
+    [HttpGet("filter/{input}/{priceSort}/{location}/{category}")]
+    public async Task<ActionResult<List<Product>>> Get(string input, string priceSort, string location, string category)
+    {
+        String[] locations = location.Split('_');
+        String[] categories = category.Split('_');
+        
+        var product = await _ProductsService.GetProductsBySearch(input == "#" ? "" : input, priceSort, locations, categories);
+
+        if (product is null)
+        {
+            return NotFound();
+        }
+
+        return product;
+    }
+
+    [HttpPost("create")]
     public async Task<IActionResult> Post(Product newProduct)
     {
         await _ProductsService.CreateProduct(newProduct);
@@ -38,7 +59,7 @@ public class ProductsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newProduct.product_id }, newProduct);
     }
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(string id, Product updatedProduct)
     {
         var Product = await _ProductsService.GetProductsByID(id);
@@ -55,7 +76,7 @@ public class ProductsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var Product = await _ProductsService.GetProductsByID(id);

@@ -17,7 +17,7 @@ public class CartItemsController : ControllerBase
     public async Task<List<CartItem>> Get() =>
         await _CartItemsService.GetAllCartItem();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<CartItem>> Get(string id)
     {
         var cartItem = await _CartItemsService.GetCartItemByID(id);
@@ -38,7 +38,7 @@ public class CartItemsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newCartItem.customer_id }, newCartItem);
     }
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> Update(string id, CartItem updatedCartItem)
     {
         var cartItem = await _CartItemsService.GetCartItemByID(id);
@@ -55,7 +55,7 @@ public class CartItemsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var CartItem = await _CartItemsService.GetCartItemByID(id);

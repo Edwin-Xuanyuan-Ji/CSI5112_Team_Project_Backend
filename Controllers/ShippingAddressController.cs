@@ -17,7 +17,7 @@ public class ShippingAddressController : ControllerBase
     public async Task<List<ShippingAddress>> Get() =>
         await _ShippingAddressService.GetAllShippingAddress();
 
-    [HttpGet("{id:length(24)}")]
+    [HttpGet("{id}")]
     public async Task<ActionResult<ShippingAddress>> Get(string id)
     {
         var shippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
@@ -30,7 +30,7 @@ public class ShippingAddressController : ControllerBase
         return shippingAddress;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Post(ShippingAddress newShippingAddress)
     {
         await _ShippingAddressService.CreateNewShippingAddress(newShippingAddress);
@@ -38,7 +38,7 @@ public class ShippingAddressController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newShippingAddress.shipping_address_id }, newShippingAddress);
     }
 
-    [HttpPut("{id:length(24)}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(string id, ShippingAddress updatedShippingAddress)
     {
         var ShippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
@@ -55,7 +55,7 @@ public class ShippingAddressController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id:length(24)}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(string id)
     {
         var ShippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);

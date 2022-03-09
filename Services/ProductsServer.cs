@@ -19,17 +19,26 @@ public class ProductsService
 
         _productsCollection = mongoDatabase.GetCollection<Product>(
             csi5112BackEndDataBaseSettings.Value.ProductsCollectionName);
+
     }
 
-    public async Task<List<Product>> GetAllProducts() =>
+    public async Task<List<Product>> GetAllProducts() => 
         await _productsCollection.Find(_ => true).ToListAsync();
 
     public async Task<Product?> GetProductsByID(string id) =>
         await _productsCollection.Find(x => x.product_id == id).FirstOrDefaultAsync();
 
-    public async Task<List<Product>> GetProductsByMerchant(string id) =>
-        await _productsCollection.Find(x => x.product_id == id).ToListAsync();
+    public async Task<List<Product>> GetProductsByMerchant(string id, string input, string priceSort, string[] locations, string[] categories) {
+        var sortPrice = priceSort == "ascending" ? Builders<Product>.Sort.Ascending("price") : Builders<Product>.Sort.Descending("price");
+        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.Contains(input) && x.owner == id).Sort(sortPrice).ToListAsync();
+    }
+        
 
+    public async Task<List<Product>> GetProductsBySearch(string input, string priceSort, string[] locations, string[] categories) {
+        var sortPrice = priceSort == "ascending" ? Builders<Product>.Sort.Ascending("price") : Builders<Product>.Sort.Descending("price");
+        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.Contains(input)).Sort(sortPrice).ToListAsync();
+    }
+        
     public async Task CreateProduct(Product newProduct) =>
         await _productsCollection.InsertOneAsync(newProduct);
 
