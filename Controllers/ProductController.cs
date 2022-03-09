@@ -19,8 +19,8 @@ public class ProductsController : ControllerBase
         return product;
     }
 
-    [HttpGet("filter/{owner_id}/{input}/{priceSort}/{location}/{category}")]
-    public async Task<ActionResult<List<Product>>> Get(string owner_id, string input, string priceSort, string location, string category)
+    [HttpGet("filter/owner")]
+    public async Task<ActionResult<List<Product>>> Get([FromQuery] string owner_id, [FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
     {
         String[] locations = location.Split('_');
         String[] categories = category.Split('_');
@@ -35,8 +35,8 @@ public class ProductsController : ControllerBase
         return product;
     }
 
-    [HttpGet("filter/{input}/{priceSort}/{location}/{category}")]
-    public async Task<ActionResult<List<Product>>> Get(string input, string priceSort, string location, string category)
+    [HttpGet("filter")]
+    public async Task<ActionResult<List<Product>>> Gets([FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
     {
         String[] locations = location.Split('_');
         String[] categories = category.Split('_');
@@ -59,8 +59,8 @@ public class ProductsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newProduct.product_id }, newProduct);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(string id, Product updatedProduct)
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromQuery]string id, Product updatedProduct)
     {
         var Product = await _ProductsService.GetProductsByID(id);
 
@@ -76,16 +76,9 @@ public class ProductsController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromBody] string[] id)
     {
-        var Product = await _ProductsService.GetProductsByID(id);
-
-        if (Product is null)
-        {
-            return NotFound();
-        }
-
         await _ProductsService.RemoveProduct(id);
 
         return NoContent();

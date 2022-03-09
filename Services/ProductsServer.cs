@@ -45,6 +45,6 @@ public class ProductsService
     public async Task UpdateProduct(string id, Product updatedProduct) =>
         await _productsCollection.ReplaceOneAsync(x => x.product_id == id, updatedProduct);
 
-    public async Task RemoveProduct(string id) =>
-        await _productsCollection.DeleteOneAsync(x => x.product_id == id);
+    public async Task RemoveProduct(string[] id) =>
+        await _productsCollection.DeleteOneAsync(x => id.Contains(x.product_id));
 }

@@ -33,6 +33,6 @@ public class CartItemsService
     public async Task UpdateCartItem(string id, CartItem updatedCartItem) =>
         await _cartItemsCollection.ReplaceOneAsync(x => x.item_id == id, updatedCartItem);
 
-    public async Task RemoveCartItem(string id) =>
-        await _cartItemsCollection.DeleteOneAsync(x => x.item_id == id);
+    public async Task RemoveCartItem(string[] id) =>
+        await _cartItemsCollection.DeleteOneAsync(x => id.Contains(x.item_id));
 }

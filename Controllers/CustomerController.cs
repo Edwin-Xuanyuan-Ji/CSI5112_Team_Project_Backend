@@ -13,14 +13,14 @@ public class CustomersController : ControllerBase
     public CustomersController(CustomersService CustomersService) =>
         _CustomersService = CustomersService;
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<List<Customer>> Get() =>
         await _CustomersService.GetAllCustomers();
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Customer>> Get(string id)
+    [HttpGet]
+    public async Task<ActionResult<Customer>> Get([FromQuery]string customer_id)
     {
-        var customer = await _CustomersService.GetCustomerByID(id);
+        var customer = await _CustomersService.GetCustomerByID(customer_id);
 
         if (customer is null)
         {
@@ -38,10 +38,10 @@ public class CustomersController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newCustomer.customer_id }, newCustomer);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(string id, Customer updatedCustomer)
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromQuery]string customer_id, Customer updatedCustomer)
     {
-        var Customer = await _CustomersService.GetCustomerByID(id);
+        var Customer = await _CustomersService.GetCustomerByID(customer_id);
 
         if (Customer is null)
         {
@@ -50,22 +50,22 @@ public class CustomersController : ControllerBase
 
         updatedCustomer.customer_id = Customer.customer_id;
 
-        await _CustomersService.UpdateCustomer(id, updatedCustomer);
+        await _CustomersService.UpdateCustomer(customer_id, updatedCustomer);
 
         return NoContent();
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromQuery]string customer_id)
     {
-        var Customer = await _CustomersService.GetCustomerByID(id);
+        var Customer = await _CustomersService.GetCustomerByID(customer_id);
 
         if (Customer is null)
         {
             return NotFound();
         }
 
-        await _CustomersService.RemoveCustomer(id);
+        await _CustomersService.RemoveCustomer(customer_id);
 
         return NoContent();
     }

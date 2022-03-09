@@ -13,12 +13,12 @@ public class SalesOrdersController : ControllerBase
     public SalesOrdersController(SalesOrdersService SalesOrdersService) =>
         _SalesOrdersService = SalesOrdersService;
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<List<SalesOrder>> Get() =>
         await _SalesOrdersService.GetAllSalesOrders();
 
-    [HttpGet("{id}/{role}")]
-    public async Task<ActionResult<List<SalesOrder>>> Get(string id, string role)
+    [HttpGet]
+    public async Task<ActionResult<List<SalesOrder>>> Get([FromQuery]string id, [FromQuery]string role)
     {
         var salesOrder = new List<SalesOrder>();
         if (role == "Customer") salesOrder = await _SalesOrdersService.GetSalesOrdersByCustomer(id);
@@ -32,7 +32,7 @@ public class SalesOrdersController : ControllerBase
         return salesOrder;
     }
 
-    [HttpPost]
+    [HttpPost("create")]
     public async Task<IActionResult> Post(SalesOrder newSalesOrder)
     {
         await _SalesOrdersService.CreateSalesOrder(newSalesOrder);
@@ -40,17 +40,10 @@ public class SalesOrdersController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newSalesOrder.order_id }, newSalesOrder);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromBody] string[] ids)
     {
-        var SalesOrder = await _SalesOrdersService.GetSalesOrdersByID(id);
-
-        if (SalesOrder is null)
-        {
-            return NotFound();
-        }
-
-        await _SalesOrdersService.RemoveSalesOrder(id);
+        await _SalesOrdersService.RemoveSalesOrder(ids);
 
         return NoContent();
     }

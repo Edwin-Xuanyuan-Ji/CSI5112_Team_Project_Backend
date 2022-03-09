@@ -13,14 +13,17 @@ public class ShippingAddressController : ControllerBase
     public ShippingAddressController(ShippingAddressService ShippingAddressService) =>
         _ShippingAddressService = ShippingAddressService;
 
-    [HttpGet]
-    public async Task<List<ShippingAddress>> Get() =>
-        await _ShippingAddressService.GetAllShippingAddress();
+    [HttpGet("by_user")]
+    public async Task<List<ShippingAddress>> Get([FromQuery] string shipping_address_ids) {
+        String[] shipping_address_id = shipping_address_ids.Split('_');
+        var res = await _ShippingAddressService.GetAllShippingAddress(shipping_address_id );
+        return res;
+    }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ShippingAddress>> Get(string id)
+    [HttpGet]
+    public async Task<ActionResult<ShippingAddress>> Gets([FromQuery]string shipping_address_id)
     {
-        var shippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
+        var shippingAddress = await _ShippingAddressService.GetShippingAddressByID(shipping_address_id);
 
         if (shippingAddress is null)
         {
@@ -38,8 +41,8 @@ public class ShippingAddressController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newShippingAddress.shipping_address_id }, newShippingAddress);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(string id, ShippingAddress updatedShippingAddress)
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromQuery]string id, ShippingAddress updatedShippingAddress)
     {
         var ShippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
 
@@ -55,17 +58,10 @@ public class ShippingAddressController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromBody] string[] ids)
     {
-        var ShippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
-
-        if (ShippingAddress is null)
-        {
-            return NotFound();
-        }
-
-        await _ShippingAddressService.RemoveShippingAddress(id);
+        await _ShippingAddressService.RemoveShippingAddress(ids);
 
         return NoContent();
     }

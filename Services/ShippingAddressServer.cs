@@ -21,8 +21,8 @@ public class ShippingAddressService
             csi5112BackEndDataBaseSettings.Value.ShippingAddressCollectionName);
     }
 
-    public async Task<List<ShippingAddress>> GetAllShippingAddress() =>
-        await _shippingAddressCollection.Find(_ => true).ToListAsync();
+    public async Task<List<ShippingAddress>> GetAllShippingAddress(String[] ids) =>
+        await _shippingAddressCollection.Find(x => ids.Contains(x.shipping_address_id)).ToListAsync();
 
     public async Task<ShippingAddress?> GetShippingAddressByID(string id) =>
         await _shippingAddressCollection.Find(x => x.shipping_address_id == id).FirstOrDefaultAsync();
@@ -33,6 +33,6 @@ public class ShippingAddressService
     public async Task UpdateShippingAddress(string id, ShippingAddress updatedShippingAddress) =>
         await _shippingAddressCollection.ReplaceOneAsync(x => x.shipping_address_id == id, updatedShippingAddress);
 
-    public async Task RemoveShippingAddress(string id) =>
-        await _shippingAddressCollection.DeleteOneAsync(x => x.shipping_address_id == id);
+    public async Task RemoveShippingAddress(string[] id) =>
+        await _shippingAddressCollection.DeleteOneAsync(x => id.Contains(x.shipping_address_id));
 }

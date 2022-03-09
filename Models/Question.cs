@@ -12,7 +12,7 @@ public class Question
 
     public string customer_id { get; set; } = null!;
 
-    public string date { get; set; } = null!;
+    public DateTime date { get; set; }
 
     public string question { get; set; } = null!;
 

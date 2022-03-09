@@ -13,12 +13,12 @@ public class MerchantsController : ControllerBase
     public MerchantsController(MerchantsService MerchantsService) =>
         _MerchantsService = MerchantsService;
 
-    [HttpGet]
+    [HttpGet("all")]
     public async Task<List<Merchant>> Get() =>
         await _MerchantsService.GetAllMerchant();
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Merchant>> Get(string id)
+    [HttpGet]
+    public async Task<ActionResult<Merchant>> Get([FromQuery]string id)
     {
         var merchant = await _MerchantsService.GetMerchantByID(id);
 
@@ -38,10 +38,10 @@ public class MerchantsController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = newMerchant.merchant_id }, newMerchant);
     }
 
-    [HttpPut("update/{id}")]
-    public async Task<IActionResult> Update(string id, Merchant updatedMerchant)
+    [HttpPut("update")]
+    public async Task<IActionResult> Update([FromQuery]string merchant_id, Merchant updatedMerchant)
     {
-        var Merchant = await _MerchantsService.GetMerchantByID(id);
+        var Merchant = await _MerchantsService.GetMerchantByID(merchant_id);
 
         if (Merchant is null)
         {
@@ -50,23 +50,23 @@ public class MerchantsController : ControllerBase
 
         updatedMerchant.merchant_id = Merchant.merchant_id;
 
-        await _MerchantsService.UpdateMerchant(id, updatedMerchant);
+        await _MerchantsService.UpdateMerchant(merchant_id, updatedMerchant);
 
         return NoContent();
     }
 
-    [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete(string merchant_id)
     {
-        var Merchant = await _MerchantsService.GetMerchantByID(id);
+        var Merchant = await _MerchantsService.GetMerchantByID(merchant_id);
 
         if (Merchant is null)
         {
             return NotFound();
         }
 
-        await _MerchantsService.RemoveMerchant(id);
+        await _MerchantsService.RemoveMerchant(merchant_id);
 
         return NoContent();
     }
-}
+}  

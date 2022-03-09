@@ -36,6 +36,6 @@ public class SalesOrdersService
     public async Task CreateSalesOrder(SalesOrder newSalesOrder) =>
         await _salesOrdersCollection.InsertOneAsync(newSalesOrder);
 
-    public async Task RemoveSalesOrder(string id) =>
-        await _salesOrdersCollection.DeleteOneAsync(x => x.order_id == id);
+    public async Task RemoveSalesOrder(string[] id) =>
+        await _salesOrdersCollection.DeleteOneAsync(x => id.Contains(x.order_id));
 }

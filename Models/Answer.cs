@@ -18,6 +18,6 @@ public class Answer
 
     public string answer { get; set; } = null!;
 
-    public string product_id { get; set; } = null!;
+    public DateTime date { get; set; }
 
 }

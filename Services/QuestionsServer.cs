@@ -36,6 +36,6 @@ public class QuestionsService
     public async Task UpdateQuestion(string id, Question updatedQuestion) =>
         await _questionsCollection.ReplaceOneAsync(x => x.question_id == id, updatedQuestion);
 
-    public async Task RemoveQuestion(string id) =>
-        await _questionsCollection.DeleteOneAsync(x => x.question_id == id);
+    public async Task RemoveQuestion(string[] id) =>
+        await _questionsCollection.DeleteOneAsync(x => id.Contains(x.question_id));
 }

@@ -22,7 +22,7 @@ public class Product
 
     public string owner { get; set; } = null!;
 
-    public string[] question_id { get; set; } = null!;
+    public DateTime question_id { get; set; }
 
     public string image { get; set; } = null!;
 }

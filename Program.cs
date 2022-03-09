@@ -12,6 +12,8 @@ builder.Services.AddSingleton<ProductsService>();
 builder.Services.AddSingleton<CartItemsService>();
 builder.Services.AddSingleton<MerchantsService>();
 builder.Services.AddSingleton<ShippingAddressService>();
+builder.Services.AddSingleton<AnswersService>();
+builder.Services.AddSingleton<QuestionsService>();
 builder.Services.AddSingleton<SalesOrdersService>();
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
