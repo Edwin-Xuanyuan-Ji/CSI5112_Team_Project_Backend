@@ -28,12 +28,12 @@ builder.Services.AddSwaggerGen(options => {
         Contact = new OpenApiContact
         {
             Name = "Data Structure",
-            Url = new Uri("https://app.diagrams.net/#G19hSHSHkBbbwpSPiB6_9oLpAzXla3YvcQ")
+            Url = new Uri("https://drive.google.com/file/d/19hSHSHkBbbwpSPiB6_9oLpAzXla3YvcQ/view?usp=sharing")
         },
         License = new OpenApiLicense
         {
             Name = "Document",
-            Url = new Uri("https://docs.google.com/document/d/1VUlc_1GzPz6BdAvtF8bId2pfDTvfxX-A/edit")
+            Url = new Uri("https://docs.google.com/document/d/1NMq69Xqf4LZchNlQu6PfEojGmDLJqnAPf4AUvYSSdPA/edit")
         }
     });
 });
