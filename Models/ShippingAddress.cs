@@ -19,4 +19,6 @@ public class ShippingAddress
     public string zipcode { get; set; } = null!;
 
     public string country { get; set; } = null!;
+
+    public string user_id { get; set; } = null!;
 }

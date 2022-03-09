@@ -14,11 +14,8 @@ public class ShippingAddressController : ControllerBase
         _ShippingAddressService = ShippingAddressService;
 
     [HttpGet("by_user")]
-    public async Task<List<ShippingAddress>> Get([FromQuery] string shipping_address_ids) {
-        String[] shipping_address_id = shipping_address_ids.Split('_');
-        var res = await _ShippingAddressService.GetAllShippingAddress(shipping_address_id );
-        return res;
-    }
+    public async Task<List<ShippingAddress>> Get([FromQuery] string user_id) =>
+        await _ShippingAddressService.GetShippingAddressByUser(user_id);
 
     [HttpGet]
     public async Task<ActionResult<ShippingAddress>> Gets([FromQuery]string shipping_address_id)

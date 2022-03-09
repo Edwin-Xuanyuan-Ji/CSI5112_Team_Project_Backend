@@ -16,8 +16,6 @@ public class Customer
 
     public string phone { get; set; } = null!;
 
-    public string[] shipping_address_id { get; set; } = null!;
-
     public string email { get; set; } = null!;
 
     public string password { get; set; } = null!;

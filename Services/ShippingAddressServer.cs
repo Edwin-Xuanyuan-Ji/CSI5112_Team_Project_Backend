@@ -21,8 +21,8 @@ public class ShippingAddressService
             csi5112BackEndDataBaseSettings.Value.ShippingAddressCollectionName);
     }
 
-    public async Task<List<ShippingAddress>> GetAllShippingAddress(String[] ids) =>
-        await _shippingAddressCollection.Find(x => ids.Contains(x.shipping_address_id)).ToListAsync();
+    public async Task<List<ShippingAddress>> GetShippingAddressByUser(string id) =>
+        await _shippingAddressCollection.Find(x => x.user_id == id).ToListAsync();
 
     public async Task<ShippingAddress?> GetShippingAddressByID(string id) =>
         await _shippingAddressCollection.Find(x => x.shipping_address_id == id).FirstOrDefaultAsync();
