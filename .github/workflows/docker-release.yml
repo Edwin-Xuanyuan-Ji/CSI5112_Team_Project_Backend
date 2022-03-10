@@ -15,7 +15,7 @@ jobs:
     - name: Docker login
       uses: docker/login-action@v1
       with:
-        username: sherryyc
+        username: xuanyuandocker
         password: ${{ secrets.DOCKERHUB_TOKEN }}
         
     - name: Docker build and push
@@ -23,5 +23,5 @@ jobs:
       with:
         context: ${{ env.GITHUB_WORKSPACE }}
         file: ${{ env.GITHUB_WORKSPACE }}/Dockerfile
-        tags: sherryyc/project_backend:latest
+        tags: xuanyuandocker/5112_online_mall:latest
         push: true
