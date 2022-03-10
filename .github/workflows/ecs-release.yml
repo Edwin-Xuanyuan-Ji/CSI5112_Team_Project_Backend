@@ -31,4 +31,5 @@ jobs:
         aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 552464281736.dkr.ecr.us-east-1.amazonaws.com
         docker build -t teamprojectf .
         docker tag teamprojectf:latest 552464281736.dkr.ecr.us-east-1.amazonaws.com/teamprojectf:latest
+        docker push 552464281736.dkr.ecr.us-east-1.amazonaws.com/teamprojectf:latest
         aws ecs update-service --cluster $ECS_CLUSTER --service $ECS_SERVICE --force-new-deployment --region $AWS_REGION
