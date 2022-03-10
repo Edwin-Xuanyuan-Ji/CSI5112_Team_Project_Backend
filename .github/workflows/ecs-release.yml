@@ -8,8 +8,8 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: 552464281736.dkr.ecr.us-east-1.amazonaws.com
-  ECS_SERVICE: csiteamService
-  ECS_CLUSTER: csiteampro
+  ECS_SERVICE: csiprojectservice
+  ECS_CLUSTER: csiprojecttest
 
 jobs:
   build:
