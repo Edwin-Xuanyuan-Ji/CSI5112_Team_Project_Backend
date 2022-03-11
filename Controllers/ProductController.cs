@@ -1,6 +1,7 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
 
 namespace CSI5112BackEndApi.Controllers;
 
@@ -13,7 +14,9 @@ public class ProductsController : ControllerBase
     public ProductsController(ProductsService ProductsService) =>
         _ProductsService = ProductsService;
 
+    
     [HttpGet("all")]
+    // [EnableCors("policy")]
     public async Task<ActionResult<List<Product>>> Get() {
         var product = await _ProductsService.GetAllProducts();
         return product;
