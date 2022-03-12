@@ -9,11 +9,11 @@ public class CartItem {
     [BsonRepresentation(BsonType.ObjectId)] // to allow passing the parameter as type string instead of an ObjectId structure
     public string? item_id { get; set; } = null!;
 
-    public int? quantity { get; set; } = null!;
+    public int quantity { get; set; }
 
-    public string? customer_id { get; set; } = null!;
+    public string customer_id { get; set; } = null!;
 
-    public string? product_id { get; set; } = null!;
+    public string product_id { get; set; } = null!;
 
-    public int? price { get; set; } = null!;
+    public int price { get; set; }
 }
