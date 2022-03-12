@@ -16,13 +16,16 @@ builder.Services.AddSingleton<AnswersService>();
 builder.Services.AddSingleton<QuestionsService>();
 builder.Services.AddSingleton<SalesOrdersService>();
 
-// builder.Services.AddCors(options => {
-//     options.AddPolicy(name: "policy",
-//         builder => {
-//             builder.WithOrigins("http://127.0.0.1:6262/","https://localhost:7027").AllowAnyHeader().AllowAnyMethod();;
-//         }
-//     );
-// });
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: "policy",
+        builder => {
+            builder.WithOrigins("https://localhost:7027")
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
 
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -54,7 +57,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-// app.UseCors();
+app.UseCors("policy");
 
 app.UseAuthorization();
 

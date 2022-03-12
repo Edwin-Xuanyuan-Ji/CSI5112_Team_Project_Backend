@@ -16,7 +16,6 @@ public class ProductsController : ControllerBase
 
     
     [HttpGet("all")]
-    // [EnableCors("policy")]
     public async Task<ActionResult<List<Product>>> Get() {
         var product = await _ProductsService.GetAllProducts();
         return product;
