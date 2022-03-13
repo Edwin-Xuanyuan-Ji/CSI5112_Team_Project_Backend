@@ -36,6 +36,7 @@ builder.Services.AddSwaggerGen(options => {
         Version = "v1",
         Title = "CSI 5112 BackEnd API",
         Description = "An ASP.NET Core Web API with MongoDB",
+        TermsOfService = new Uri("https://cloud.mongodb.com/v2/62211b47e91d7e6f2615be09#clusters"),
         Contact = new OpenApiContact
         {
             Name = "Data Structure",
