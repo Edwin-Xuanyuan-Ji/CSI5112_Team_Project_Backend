@@ -1,7 +1,6 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Cors;
 
 namespace CSI5112BackEndApi.Controllers;
 
@@ -20,6 +19,29 @@ public class ProductsController : ControllerBase
         var product = await _ProductsService.GetAllProducts();
         return product;
     }
+
+    [HttpGet("get_filter_option")]
+    public async Task<FilterOption> GetFilterOption() {
+        List<Product> res = await _ProductsService.GetAllProducts();
+        HashSet<String> filter_category = new HashSet<string>();
+        HashSet<String> filter_manufacturer = new HashSet<string>();
+        foreach (Product p in res) {
+            filter_category.Add(p.category);
+            filter_manufacturer.Add(p.manufacturer);
+        }
+        String categories = "";
+        String manufacturers = "";
+        foreach (String s in filter_category) {
+            categories += s;
+            categories += "_";
+        }
+        foreach (String s in filter_manufacturer) {
+            manufacturers += s;
+            manufacturers += "_";
+        }
+        return new FilterOption(categories.Remove(categories.Length - 1, 1), manufacturers.Remove(manufacturers.Length - 1, 1));
+    }
+
 
     [HttpGet]
     public async Task<List<Product>> Get([FromQuery]string product_id) =>
