@@ -18,7 +18,7 @@ public class AnswersController : ControllerBase
         await _AnswersService.GetAllAnswers();
     
     [HttpGet]
-    public async Task<Answer> Get([FromQuery]string answer_id) =>
+    public async Task<List<Answer>> Get([FromQuery]string answer_id) =>
         await _AnswersService.GetAnswerByID(answer_id);
 
     [HttpGet("by_question")]
@@ -52,7 +52,7 @@ public class AnswersController : ControllerBase
             return NotFound();
         }
 
-        updatedAnswer.answer_id = Answer.answer_id;
+        updatedAnswer.answer_id = Answer[0].answer_id;
 
         await _AnswersService.UpdateAnswer(answer_id, updatedAnswer);
 

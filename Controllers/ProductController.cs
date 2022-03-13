@@ -21,6 +21,10 @@ public class ProductsController : ControllerBase
         return product;
     }
 
+    [HttpGet]
+    public async Task<List<Product>> Get([FromQuery]string product_id) =>
+        await _ProductsService.GetProductsByID(product_id);
+
     [HttpGet("filter/owner")]
     public async Task<ActionResult<List<Product>>> Get([FromQuery] string owner_id, [FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
     {
@@ -71,7 +75,7 @@ public class ProductsController : ControllerBase
             return NotFound();
         }
 
-        updatedProduct.product_id = Product.product_id;
+        updatedProduct.product_id = Product[0].product_id;
 
         await _ProductsService.UpdateProduct(id, updatedProduct);
 

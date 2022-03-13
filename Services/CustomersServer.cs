@@ -24,8 +24,8 @@ public class CustomersService
     public async Task<List<Customer>> GetAllCustomers() =>
         await _customersCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Customer?> GetCustomerByID(string id) =>
-        await _customersCollection.Find(x => x.customer_id == id).FirstOrDefaultAsync();
+    public async Task<List<Customer>> GetCustomerByID(string id) =>
+        await _customersCollection.Find(x => x.customer_id == id).ToListAsync();
 
     public async Task CreateNewCustomer(Customer newCustomer) =>
         await _customersCollection.InsertOneAsync(newCustomer);

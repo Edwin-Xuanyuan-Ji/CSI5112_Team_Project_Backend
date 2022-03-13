@@ -25,8 +25,8 @@ public class AnswersService
         await _answersCollection.Find(_ => true).ToListAsync();
 
     
-    public async Task<Answer> GetAnswerByID(string id) =>
-        await _answersCollection.Find(x => x.answer_id == id).FirstOrDefaultAsync();
+    public async Task<List<Answer>> GetAnswerByID(string id) =>
+        await _answersCollection.Find(x => x.answer_id == id).ToListAsync();
 
     public async Task<List<Answer>> GetAnswerByQuestion(string id) =>
         await _answersCollection.Find(x => x.question_id == id).ToListAsync();

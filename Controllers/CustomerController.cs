@@ -18,17 +18,8 @@ public class CustomersController : ControllerBase
         await _CustomersService.GetAllCustomers();
 
     [HttpGet]
-    public async Task<ActionResult<Customer>> Get([FromQuery]string customer_id)
-    {
-        var customer = await _CustomersService.GetCustomerByID(customer_id);
-
-        if (customer is null)
-        {
-            return NotFound();
-        }
-
-        return customer;
-    }
+    public async Task<List<Customer>> Get([FromQuery]string customer_id) =>
+        await _CustomersService.GetCustomerByID(customer_id);
 
     [HttpPost("create")]
     public async Task<IActionResult> Post(Customer newCustomer)
@@ -48,7 +39,7 @@ public class CustomersController : ControllerBase
             return NotFound();
         }
 
-        updatedCustomer.customer_id = Customer.customer_id;
+        updatedCustomer.customer_id = Customer[0].customer_id;
 
         await _CustomersService.UpdateCustomer(customer_id, updatedCustomer);
 

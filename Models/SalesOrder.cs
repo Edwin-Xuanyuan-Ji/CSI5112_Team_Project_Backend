@@ -20,5 +20,7 @@ public class SalesOrder
 
     public string product_id { get; set; } = null!;
 
+    public string status { get; set; } = null!;
+
     public DateTime date { get; set; }
 }

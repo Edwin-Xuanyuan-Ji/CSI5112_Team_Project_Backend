@@ -24,8 +24,8 @@ public class CartItemsService
     public async Task<List<CartItem>> GetAllCartItem() =>
         await _cartItemsCollection.Find(_ => true).ToListAsync();
 
-    public async Task<CartItem?> GetCartItemByID(string id) =>
-        await _cartItemsCollection.Find(x => x.item_id == id).FirstOrDefaultAsync();
+    public async Task<List<CartItem>> GetCartItemByID(string id) =>
+        await _cartItemsCollection.Find(x => x.item_id == id).ToListAsync();
 
     public async Task CreateNewCartItem(CartItem newCartItem) =>
         await _cartItemsCollection.InsertOneAsync(newCartItem);
