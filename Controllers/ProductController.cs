@@ -39,7 +39,7 @@ public class ProductsController : ControllerBase
             manufacturers += s;
             manufacturers += "_";
         }
-        return new FilterOption(categories.Remove(categories.Length - 1, 1), manufacturers.Remove(manufacturers.Length - 1, 1));
+        return new FilterOption("ascending", categories.Remove(categories.Length - 1, 1), manufacturers.Remove(manufacturers.Length - 1, 1));
     }
 
 

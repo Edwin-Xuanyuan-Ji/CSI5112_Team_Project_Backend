@@ -31,11 +31,13 @@ public class Product
 }
 
 public class FilterOption {
+    public string priceSort { get; set; } = null!;
     public string categories { get; set; } = null!;
 
     public string manufacturers { get; set; } = null!;
 
-    public FilterOption(String Categories, String Manufacturers) {
+    public FilterOption(String PriceSort, String Categories, String Manufacturers) {
+        priceSort = PriceSort;
         categories = Categories;
         manufacturers = Manufacturers;
     }
