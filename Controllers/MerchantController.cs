@@ -18,17 +18,8 @@ public class MerchantsController : ControllerBase
         await _MerchantsService.GetAllMerchant();
 
     [HttpGet]
-    public async Task<ActionResult<Merchant>> Get([FromQuery]string id)
-    {
-        var merchant = await _MerchantsService.GetMerchantByID(id);
-
-        if (merchant is null)
-        {
-            return NotFound();
-        }
-
-        return merchant;
-    }
+    public async Task<List<Merchant>> Get([FromQuery]string id) =>
+        await _MerchantsService.GetMerchantByID(id);
 
     [HttpPost("create")]
     public async Task<IActionResult> Post(Merchant newMerchant)
@@ -48,7 +39,7 @@ public class MerchantsController : ControllerBase
             return NotFound();
         }
 
-        updatedMerchant.merchant_id = Merchant.merchant_id;
+        updatedMerchant.merchant_id = Merchant[0].merchant_id;
 
         await _MerchantsService.UpdateMerchant(merchant_id, updatedMerchant);
 

@@ -16,6 +16,17 @@ builder.Services.AddSingleton<AnswersService>();
 builder.Services.AddSingleton<QuestionsService>();
 builder.Services.AddSingleton<SalesOrdersService>();
 
+builder.Services.AddCors(options => {
+    options.AddPolicy(name: "policy",
+        builder => {
+            builder.WithOrigins("https://localhost:7027")
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+    );
+});
+
 builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -25,15 +36,16 @@ builder.Services.AddSwaggerGen(options => {
         Version = "v1",
         Title = "CSI 5112 BackEnd API",
         Description = "An ASP.NET Core Web API with MongoDB",
+        TermsOfService = new Uri("https://cloud.mongodb.com/v2/62211b47e91d7e6f2615be09#clusters"),
         Contact = new OpenApiContact
         {
             Name = "Data Structure",
-            Url = new Uri("https://app.diagrams.net/#G19hSHSHkBbbwpSPiB6_9oLpAzXla3YvcQ")
+            Url = new Uri("https://drive.google.com/file/d/19hSHSHkBbbwpSPiB6_9oLpAzXla3YvcQ/view?usp=sharing")
         },
         License = new OpenApiLicense
         {
             Name = "Document",
-            Url = new Uri("https://docs.google.com/document/d/1VUlc_1GzPz6BdAvtF8bId2pfDTvfxX-A/edit")
+            Url = new Uri("https://docs.google.com/document/d/1NMq69Xqf4LZchNlQu6PfEojGmDLJqnAPf4AUvYSSdPA/edit")
         }
     });
 });
@@ -41,13 +53,12 @@ builder.Services.AddSwaggerGen(options => {
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.UseCors("policy");
 
 app.UseAuthorization();
 

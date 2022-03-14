@@ -24,8 +24,8 @@ public class ShippingAddressService
     public async Task<List<ShippingAddress>> GetShippingAddressByUser(string id) =>
         await _shippingAddressCollection.Find(x => x.user_id == id).ToListAsync();
 
-    public async Task<ShippingAddress?> GetShippingAddressByID(string id) =>
-        await _shippingAddressCollection.Find(x => x.shipping_address_id == id).FirstOrDefaultAsync();
+    public async Task<List<ShippingAddress>> GetShippingAddressByID(string id) =>
+        await _shippingAddressCollection.Find(x => x.shipping_address_id == id).ToListAsync();
 
     public async Task CreateNewShippingAddress(ShippingAddress newShippingAddress) =>
         await _shippingAddressCollection.InsertOneAsync(newShippingAddress);

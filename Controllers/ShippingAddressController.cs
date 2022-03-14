@@ -18,17 +18,8 @@ public class ShippingAddressController : ControllerBase
         await _ShippingAddressService.GetShippingAddressByUser(user_id);
 
     [HttpGet]
-    public async Task<ActionResult<ShippingAddress>> Gets([FromQuery]string shipping_address_id)
-    {
-        var shippingAddress = await _ShippingAddressService.GetShippingAddressByID(shipping_address_id);
-
-        if (shippingAddress is null)
-        {
-            return NotFound();
-        }
-
-        return shippingAddress;
-    }
+    public async Task<List<ShippingAddress>> Gets([FromQuery]string shipping_address_id) =>
+        await _ShippingAddressService.GetShippingAddressByID(shipping_address_id);
 
     [HttpPost("create")]
     public async Task<IActionResult> Post(ShippingAddress newShippingAddress)
@@ -48,7 +39,7 @@ public class ShippingAddressController : ControllerBase
             return NotFound();
         }
 
-        updatedShippingAddress.shipping_address_id = ShippingAddress.shipping_address_id;
+        updatedShippingAddress.shipping_address_id = ShippingAddress[0].shipping_address_id;
 
         await _ShippingAddressService.UpdateShippingAddress(id, updatedShippingAddress);
 

@@ -24,8 +24,8 @@ public class QuestionsService
     public async Task<List<Question>> GetAllQuestions() =>
         await _questionsCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Question?> GetQuestionsByID(string id) =>
-        await _questionsCollection.Find(x => x.question_id == id).FirstOrDefaultAsync();
+    public async Task<List<Question>> GetQuestionsByID(string id) =>
+        await _questionsCollection.Find(x => x.question_id == id).ToListAsync();
 
     public async Task<List<Question>> GetQuestionsByProduct(string id) =>
         await _questionsCollection.Find(x => x.product_id == id).ToListAsync();

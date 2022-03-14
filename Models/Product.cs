@@ -1,3 +1,4 @@
+
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -22,7 +23,20 @@ public class Product
 
     public string owner { get; set; } = null!;
 
-    public DateTime question_id { get; set; }
+    public string owner_id { get; set; } = null!;
 
     public string image { get; set; } = null!;
+
+    public DateTime date { get; set; }
+}
+
+public class FilterOption {
+    public string categories { get; set; } = null!;
+
+    public string manufacturers { get; set; } = null!;
+
+    public FilterOption(String Categories, String Manufacturers) {
+        categories = Categories;
+        manufacturers = Manufacturers;
+    }
 }
