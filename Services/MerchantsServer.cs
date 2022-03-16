@@ -26,6 +26,9 @@ public class MerchantsService
 
     public async Task<List<Merchant>> GetMerchantByID(string id) =>
         await _merchantsCollection.Find(x => x.merchant_id == id).ToListAsync();
+    
+    public async Task<List<Merchant>> GetMerchantByUsername(string username) =>
+        await _merchantsCollection.Find(x => x.username == username).ToListAsync();
 
     public async Task CreateNewMerchant(Merchant newMerchant) =>
         await _merchantsCollection.InsertOneAsync(newMerchant);
