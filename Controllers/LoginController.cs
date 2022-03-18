@@ -42,33 +42,47 @@ public class LoginController: ControllerBase
         );
         
         if (!request.isMerchant) {
-                List<Customer> customers = _CustomersService.GetCustomerByUsername(request.Username).Result;
+            List<Customer> customers = _CustomersService.GetCustomerByUsername(request.Username).Result;
+            if (customers.Count == 0) {
+                return BadRequest(new
+                {
+                    error = "Username does not exist!"
+                });
+            } else {
                 Customer customer = customers[0];
                 return Ok(new 
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                customer_id = customer.customer_id,
-                first_name = customer.first_name,
-                last_name = customer.last_name,
-                phone = customer.phone,
-                email = customer.email,
-                username = customer.username,
-                password = customer.password
-            });
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    customer_id = customer.customer_id,
+                    first_name = customer.first_name,
+                    last_name = customer.last_name,
+                    phone = customer.phone,
+                    email = customer.email,
+                    username = customer.username,
+                    password = customer.password
+                });
+            }
         } else {
-                List<Merchant> merchants = _MerchantsService.GetMerchantByUsername(request.Username).Result;
+            List<Merchant> merchants = _MerchantsService.GetMerchantByUsername(request.Username).Result;
+            if (merchants.Count == 0) {
+                return BadRequest(new
+                {
+                    error = "Username does not exist!"
+                });
+            } else {
                 Merchant merchant = merchants[0];
                 return Ok(new 
-            {
-                token = new JwtSecurityTokenHandler().WriteToken(token),
-                merchant_id = merchant.merchant_id,
-                first_name = merchant.first_name,
-                last_name = merchant.last_name,
-                phone = merchant.phone,
-                email = merchant.email,
-                username = merchant.username,
-                password = merchant.password
-            });
+                {
+                    token = new JwtSecurityTokenHandler().WriteToken(token),
+                    merchant_id = merchant.merchant_id,
+                    first_name = merchant.first_name,
+                    last_name = merchant.last_name,
+                    phone = merchant.phone,
+                    email = merchant.email,
+                    username = merchant.username,
+                    password = merchant.password
+                });
+            }
         }
     }
 }
