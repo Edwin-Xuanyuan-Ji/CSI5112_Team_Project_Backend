@@ -22,48 +22,36 @@ public class AnswersController : ControllerBase
         await _AnswersService.GetAnswerByID(answer_id);
 
     [HttpGet("by_question")]
-    public async Task<IActionResult> Gets([FromQuery]string question_id)
-    {
-        var answers = await _AnswersService.GetAnswerByQuestion(question_id);
-
-        if (answers is null)
-        {
-            return NotFound();
-        }
-
-        return NoContent();
-    }
+    public async Task<List<Answer>> Gets([FromQuery]string question_id) =>
+        await _AnswersService.GetAnswerByQuestion(question_id);
 
     [HttpPost("create")]
-    public async Task<IActionResult> Post([FromBody] Answer newAnswer)
+    public async Task<List<Answer>> Post([FromBody] Answer newAnswer)
     {
         await _AnswersService.CreateAnswer(newAnswer);
 
-        return CreatedAtAction(nameof(Get), new { id = newAnswer.answer_id }, newAnswer);
+        return await _AnswersService.GetAllAnswers();
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromQuery]string answer_id, Answer updatedAnswer)
+    public async Task<List<Answer>> Update([FromQuery]string answer_id, Answer updatedAnswer)
     {
         var Answer = await _AnswersService.GetAnswerByID(answer_id);
-
-        if (Answer is null)
-        {
-            return NotFound();
-        }
 
         updatedAnswer.answer_id = Answer[0].answer_id;
 
         await _AnswersService.UpdateAnswer(answer_id, updatedAnswer);
 
-        return NoContent();
+        return await _AnswersService.GetAllAnswers();
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] string[] id)
+    public async Task<List<Answer>> Delete([FromBody] string[] ids)
     {
-        await _AnswersService.RemoveAnswer(id);
+        List<Answer> answer = await _AnswersService.GetAnswerByID(ids[0]);
+        
+        await _AnswersService.RemoveAnswer(ids);
 
-        return NoContent();
+        return await _AnswersService.GetAnswerByQuestion(answer[0].question_id);
     }
 }

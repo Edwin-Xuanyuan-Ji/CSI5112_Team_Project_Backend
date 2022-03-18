@@ -18,31 +18,28 @@ public class QuestionsController : ControllerBase
         await _QuestionsService.GetAllQuestions();
 
     [HttpGet]
-    public async Task<ActionResult<List<Question>>> Get([FromQuery] string product_id)
+    public async Task<List<Question>> Get([FromQuery] string product_id)
     {
         var questions = await _QuestionsService.GetQuestionsByProduct(product_id);
-
-        if (questions is null)
-        {
-            return NotFound();
-        }
 
         return questions;
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Post(Question newQuestion)
+    public async Task<List<Question>> Post(Question newQuestion)
     {
         await _QuestionsService.CreateQuestion(newQuestion);
 
-        return CreatedAtAction(nameof(Get), new { id = newQuestion.question_id }, newQuestion);
+        return await _QuestionsService.GetQuestionsByProduct(newQuestion.product_id);
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] string[] ids)
+    public async Task<List<Question>> Delete([FromBody] string[] ids)
     {
+        List<Question> question = await _QuestionsService.GetQuestionsByID(ids[0]);
+        
         await _QuestionsService.RemoveQuestion(ids);
 
-        return NoContent();
+        return await _QuestionsService.GetQuestionsByProduct(question[0].product_id);
     }
 }

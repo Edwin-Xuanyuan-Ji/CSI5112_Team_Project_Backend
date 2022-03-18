@@ -21,36 +21,37 @@ public class CartItemsController : ControllerBase
     public async Task<List<CartItem>> Get([FromQuery]string item_id) =>
         await _CartItemsService.GetCartItemByID(item_id);
 
+    [HttpGet("by_customer")]
+    public async Task<List<CartItem>> Gets([FromQuery]string customer_id) =>
+        await _CartItemsService.GetCartItemByCustomer(customer_id);
+
     [HttpPost("create")]
-    public async Task<IActionResult> Post([FromBody] CartItem newCartItem)
+    public async Task<List<CartItem>> Post([FromBody] CartItem newCartItem)
     {
         await _CartItemsService.CreateNewCartItem(newCartItem);
 
-        return CreatedAtAction(nameof(Get), new { id = newCartItem.customer_id }, newCartItem);
+        return await _CartItemsService.GetCartItemByCustomer(newCartItem.customer_id);
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromQuery]string item_id, [FromBody] CartItem updatedCartItem)
+    public async Task<List<CartItem>> Update([FromQuery]string item_id, [FromBody] CartItem updatedCartItem)
     {
         var cartItem = await _CartItemsService.GetCartItemByID(item_id);
-
-        if (cartItem is null)
-        {
-            return NotFound();
-        }
 
         updatedCartItem.customer_id = cartItem[0].customer_id;
 
         await _CartItemsService.UpdateCartItem(item_id, updatedCartItem);
 
-        return NoContent();
+        return await _CartItemsService.GetCartItemByCustomer(updatedCartItem.customer_id);
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] string[] ids)
+    public async Task<List<CartItem>> Delete([FromBody] string[] ids)
     {
+        List<CartItem> cartItem = await _CartItemsService.GetCartItemByID(ids[0]);
+        
         await _CartItemsService.RemoveCartItem(ids);
 
-        return NoContent();
+        return await _CartItemsService.GetCartItemByCustomer(cartItem[0].customer_id);
     }
 }
