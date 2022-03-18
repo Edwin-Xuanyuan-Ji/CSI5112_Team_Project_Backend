@@ -48,67 +48,52 @@ public class ProductsController : ControllerBase
         await _ProductsService.GetProductsByID(product_id);
 
     [HttpGet("filter/owner")]
-    public async Task<ActionResult<List<Product>>> Get([FromQuery] string owner_id, [FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
+    public async Task<List<Product>> Get([FromQuery] string owner_id, [FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
     {
         String[] locations = location.Split('_');
         String[] categories = category.Split('_');
         
         var product = await _ProductsService.GetProductsByMerchant(owner_id, input == "#" ? "" : input, priceSort, locations, categories);
 
-        if (product is null)
-        {
-            return NotFound();
-        }
-
         return product;
     }
 
     [HttpGet("filter")]
-    public async Task<ActionResult<List<Product>>> Gets([FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
+    public async Task<List<Product>> Gets([FromQuery] string input, [FromQuery] string priceSort, [FromQuery] string location, [FromQuery] string category)
     {
         String[] locations = location.Split('_');
         String[] categories = category.Split('_');
         
         var product = await _ProductsService.GetProductsBySearch(input == "#" ? "" : input, priceSort, locations, categories);
 
-        if (product is null)
-        {
-            return NotFound();
-        }
-
         return product;
     }
 
     [HttpPost("create")]
-    public async Task<IActionResult> Post(Product newProduct)
+    public async Task<List<Product>> Post(Product newProduct)
     {
         await _ProductsService.CreateProduct(newProduct);
 
-        return CreatedAtAction(nameof(Get), new { id = newProduct.product_id }, newProduct);
+        return await _ProductsService.GetAllProducts();
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromQuery]string id, Product updatedProduct)
+    public async Task<List<Product>> Update([FromQuery]string id, Product updatedProduct)
     {
         var Product = await _ProductsService.GetProductsByID(id);
-
-        if (Product is null)
-        {
-            return NotFound();
-        }
 
         updatedProduct.product_id = Product[0].product_id;
 
         await _ProductsService.UpdateProduct(id, updatedProduct);
 
-        return NoContent();
+        return await _ProductsService.GetAllProducts();
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] string[] id)
+    public async Task<List<Product>> Delete([FromBody] string id)
     {
-        await _ProductsService.RemoveProduct(id);
+        await _ProductsService.RemoveProduct(id.Split('_'));
 
-        return NoContent();
+        return await _ProductsService.GetAllProducts();
     }
 }
