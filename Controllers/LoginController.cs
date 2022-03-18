@@ -67,7 +67,7 @@ public class LoginController: ControllerBase
             if (merchants.Count == 0) {
                 return BadRequest(new
                 {
-                    error = "Username does not exist!"
+                    error = "Username does not exist or password is invalid!"
                 });
             } else {
                 Merchant merchant = merchants[0];
