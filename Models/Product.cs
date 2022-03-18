@@ -27,6 +27,8 @@ public class Product
 
     public string image { get; set; } = null!;
 
+    public string image_type { get; set; } = null!;
+
     public DateTime date { get; set; }
 }
 
