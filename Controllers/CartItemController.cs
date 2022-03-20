@@ -38,7 +38,7 @@ public class CartItemsController : ControllerBase
     {
         var cartItem = await _CartItemsService.GetCartItemByID(item_id);
 
-        updatedCartItem.customer_id = cartItem[0].customer_id;
+        updatedCartItem.item_id = cartItem[0].item_id;
 
         await _CartItemsService.UpdateCartItem(item_id, updatedCartItem);
 
