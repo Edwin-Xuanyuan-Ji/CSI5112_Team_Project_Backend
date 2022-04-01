@@ -17,6 +17,12 @@ public class RegisterController: ControllerBase
         _MerchantsService = merchantsService;
     }
 
+    [HttpGet]
+    public async Task<Boolean> checkValid([FromQuery] String username, [FromQuery] String role)
+    {
+        var res = role == "Merchant" ? await _MerchantsService.GetMerchantByUsername(username) as dynamic : await _CustomersService.GetCustomerByUsername(username) as dynamic;
+        return res.Any();
+    }
 
     [HttpPost]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)

@@ -30,7 +30,7 @@ public class AnswersController : ControllerBase
     {
         await _AnswersService.CreateAnswer(newAnswer);
 
-        return await _AnswersService.GetAllAnswers();
+        return await _AnswersService.GetAnswerByQuestion(newAnswer.question_id);
     }
 
     [HttpPut("update")]
