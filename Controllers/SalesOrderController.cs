@@ -17,26 +17,27 @@ public class SalesOrdersController : ControllerBase
     public async Task<List<SalesOrder>> Get() =>
         await _SalesOrdersService.GetAllSalesOrders();
 
-    [HttpGet]
-    public async Task<ActionResult<List<SalesOrder>>> Get([FromQuery]string id, [FromQuery]string role)
+    [HttpGet("search_salesOrder_by_userId")]
+    public async Task<List<SalesOrderEcho>> SearchSalesOrderByUserId([FromQuery] string customer_id, [FromQuery] string merchant_id, [FromQuery] string role)
     {
-        var salesOrder = new List<SalesOrder>();
-        if (role == "Customer") salesOrder = await _SalesOrdersService.GetSalesOrdersByCustomer(id);
-        else salesOrder = await _SalesOrdersService.GetSalesOrdersByMerchant(id);
-
-        if (salesOrder is null)
-        {
-            return NotFound();
-        }
-
-        return salesOrder;
+        return await _SalesOrdersService.SearchSalesOrderByUserId(customer_id, merchant_id, role);
     }
 
-    [HttpGet("search_customer")]
-    public async Task<List<SalesOrder>> Get([FromQuery] string id) {
-        return await _SalesOrdersService.SearchSalesOrdersByID(id);
+    [HttpPut("deliver_product")]
+    public async Task<IActionResult> DeliverProduct([FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
+    {
+        await _SalesOrdersService.DeliverProduct(order_id, merchant_shipping_address_id);
+        return NoContent();
+
     }
 
+    [HttpPut("recieve_product")]
+    public async Task<IActionResult> RecieveProduct([FromQuery] string order_id)
+    {
+        await _SalesOrdersService.RecieveProduct(order_id);
+        return NoContent();
+    }
+    
     [HttpPost("create")]
     public async Task<IActionResult> Post(SalesOrder newSalesOrder)
     {
@@ -53,7 +54,7 @@ public class SalesOrdersController : ControllerBase
         return NoContent();
     }
 
-     [HttpPost("placeOrder")]
+    [HttpPost("placeOrder")]
     public async Task<IActionResult> PlaceOrder([FromBody] List<PlaceOrdersFrontendRequire> placeOrdersFrontendRequires)
     {
         await _SalesOrdersService.PlaceOrder(placeOrdersFrontendRequires);
