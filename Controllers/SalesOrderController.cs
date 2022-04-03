@@ -28,7 +28,6 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.DeliverProduct(order_id, merchant_shipping_address_id);
         return NoContent();
-
     }
 
     [HttpPut("recieve_product")]

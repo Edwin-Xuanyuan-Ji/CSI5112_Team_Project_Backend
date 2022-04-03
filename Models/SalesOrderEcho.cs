@@ -7,6 +7,5 @@ public class SalesOrderEcho
 {
     public SalesOrder salesOrder{ get; set; } = null!;
     public ShippingAddress merchantAddress{ get; set; } = null!;
-
     public ShippingAddress customerAddress{ get; set; } = null!;
 }

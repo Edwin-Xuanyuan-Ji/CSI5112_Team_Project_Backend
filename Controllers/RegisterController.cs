@@ -51,8 +51,6 @@ public class RegisterController: ControllerBase
                 {
                     success = "You have registered in our application as customer"
                 });
-
-
         } else {
             List<Merchant> merchants = _MerchantsService.GetMerchantByUsername(request.username).Result;
             if (merchants.Count != 0) {
@@ -73,9 +71,9 @@ public class RegisterController: ControllerBase
 
             await _MerchantsService.CreateNewMerchant(m);
             return Ok(new 
-                {
-                    success = "You have registered in our application as merchant"
-                });
+            {
+                success = "You have registered in our application as merchant"
+            });
         }
     }
 }
