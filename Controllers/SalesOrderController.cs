@@ -32,7 +32,7 @@ public class SalesOrdersController : ControllerBase
         return salesOrder;
     }
 
-    [HttpGet("by_customer")]
+    [HttpGet("search_customer")]
     public async Task<List<SalesOrder>> Get([FromQuery] string id) {
         return await _SalesOrdersService.SearchSalesOrdersByID(id);
     }

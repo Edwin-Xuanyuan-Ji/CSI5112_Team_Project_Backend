@@ -2,8 +2,6 @@ using CSI5112BackEndApi.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-
-
 namespace CSI5112BackEndApi.Services;
 
 public class CartItemsServer
@@ -33,7 +31,7 @@ public class CartItemsServer
         {
             string product_id = cartItem.product_id;
             int quantity = cartItem.quantity;
-            string itemId = cartItem.item_id;
+            string itemId = cartItem.item_id ?? "";
             List<Product> products =await _ProductsService.GetProductsByID(product_id);
             CartProduct cartProduct = new CartProduct();
             if(products.Any()){
