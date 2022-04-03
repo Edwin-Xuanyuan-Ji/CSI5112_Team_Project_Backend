@@ -24,6 +24,9 @@ public class SalesOrdersService
     public async Task<List<SalesOrder>> GetAllSalesOrders() =>
         await _salesOrdersCollection.Find(_ => true).ToListAsync();
 
+    public async Task<List<SalesOrder>> SearchSalesOrdersByID(string id) => 
+        await _salesOrdersCollection.Find(x => x.customer_id.ToLower().Contains(id.ToLower())).ToListAsync();
+
     public async Task<List<SalesOrder>> GetSalesOrdersByID(string id) =>
         await _salesOrdersCollection.Find(x => x.order_id == id).ToListAsync();
 

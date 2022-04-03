@@ -32,6 +32,11 @@ public class SalesOrdersController : ControllerBase
         return salesOrder;
     }
 
+    [HttpGet("by_customer")]
+    public async Task<List<SalesOrder>> Get([FromQuery] string id) {
+        return await _SalesOrdersService.SearchSalesOrdersByID(id);
+    }
+
     [HttpPost("create")]
     public async Task<IActionResult> Post(SalesOrder newSalesOrder)
     {

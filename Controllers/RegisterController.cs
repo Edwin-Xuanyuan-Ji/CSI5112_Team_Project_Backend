@@ -21,7 +21,7 @@ public class RegisterController: ControllerBase
     public async Task<Boolean> checkValid([FromQuery] String username, [FromQuery] String role)
     {
         var res = role == "Merchant" ? await _MerchantsService.GetMerchantByUsername(username) as dynamic : await _CustomersService.GetCustomerByUsername(username) as dynamic;
-        return res.Any();
+        return res.Count > 0;
     }
 
     [HttpPost]

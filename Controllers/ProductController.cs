@@ -1,7 +1,7 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Drawing;
 namespace CSI5112BackEndApi.Controllers;
 
 [ApiController]
@@ -10,8 +10,9 @@ public class ProductsController : ControllerBase
 {
     private readonly ProductsService _ProductsService;
 
-    public ProductsController(ProductsService ProductsService) =>
+    public ProductsController(ProductsService ProductsService) {
         _ProductsService = ProductsService;
+    }   
     
     [HttpGet("all")]
     public async Task<ActionResult<List<Product>>> Get() {
@@ -98,6 +99,15 @@ public class ProductsController : ControllerBase
     [HttpPost("create")]
     public async Task<List<Product>> Post(Product newProduct)
     {
+        if (newProduct.image_type == "local") {
+            MemoryStream stream = new MemoryStream(Convert.FromBase64String(newProduct.image));
+            var imageName = newProduct.owner_id + '_' + newProduct.product_id + ".png";
+            var file = Image.FromStream(stream);
+            await _ProductsService.UploadFileAsync(stream, imageName);
+            newProduct.image = "https://csi5112pics.s3.amazonaws.com/" + imageName;
+            newProduct.image_type = "network";
+        }
+        
         await _ProductsService.CreateProduct(newProduct);
 
         return await _ProductsService.GetProductsByMerchant(newProduct.owner_id);
@@ -106,6 +116,15 @@ public class ProductsController : ControllerBase
     [HttpPut("update")]
     public async Task<List<Product>> Update([FromQuery]string id, Product updatedProduct)
     {
+        if (updatedProduct.image_type == "local") {
+            MemoryStream stream = new MemoryStream(Convert.FromBase64String(updatedProduct.image));
+            var imageName = updatedProduct.owner_id + '_' + updatedProduct.product_id + ".png";
+            var file = Image.FromStream(stream);
+            await _ProductsService.UploadFileAsync(stream, imageName);
+            updatedProduct.image = "https://csi5112pics.s3.amazonaws.com/" + imageName;
+            updatedProduct.image_type = "network";
+        }
+        
         var Product = await _ProductsService.GetProductsByID(id);
 
         updatedProduct.product_id = Product[0].product_id;
@@ -132,9 +151,9 @@ public class ProductsController : ControllerBase
     }
 
     [HttpDelete("delete")]
-    public async Task<List<Product>> Delete([FromBody] string id)
+    public async Task<List<Product>> Delete([FromBody] string ids)
     {
-        await _ProductsService.RemoveProduct(id.Split('_'));
+        await _ProductsService.RemoveProduct(ids.Split('_'));
 
         return await _ProductsService.GetAllProducts();
     }

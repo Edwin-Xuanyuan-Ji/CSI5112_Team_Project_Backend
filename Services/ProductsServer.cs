@@ -1,12 +1,20 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using CSI5112BackEndApi.Models;
+using Amazon;
+using Amazon.S3;
+using Amazon.S3.Transfer;
 
 namespace CSI5112BackEndApi.Services;
 
 public class ProductsService
 {
     private readonly IMongoCollection<Product> _productsCollection;
+
+    private static readonly RegionEndpoint bucketRegion = RegionEndpoint.USEast1;
+    private static readonly string awsAccessKeyId = "AKIAYBILP6CEHN3EMQGO";
+    private static readonly string awsSecretAccessKey = "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";
+    private static IAmazonS3 s3Client = new AmazonS3Client(awsAccessKeyId, awsSecretAccessKey, bucketRegion);
 
     public ProductsService(
         IOptions<CSI5112BackEndDataBaseSettings> csi5112BackEndDataBaseSettings)
@@ -20,6 +28,12 @@ public class ProductsService
         _productsCollection = mongoDatabase.GetCollection<Product>(
             csi5112BackEndDataBaseSettings.Value.ProductsCollectionName);
 
+    }
+
+    public async Task UploadFileAsync(Stream FileStream, String keyName)
+    {
+        var fileTransferUtility = new TransferUtility(s3Client);
+        await fileTransferUtility.UploadAsync(FileStream, "csi5112pics", keyName);
     }
 
     public async Task<List<Product>> GetAllProducts() => 
