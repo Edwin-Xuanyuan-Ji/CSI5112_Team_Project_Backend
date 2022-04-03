@@ -53,10 +53,10 @@ public class SalesOrdersController : ControllerBase
         return NoContent();
     }
 
-     [HttpDelete("post")]
-    public async Task<IActionResult> PlaceOrder([FromBody] string[] ids)
+     [HttpPost("placeOrder")]
+    public async Task<IActionResult> PlaceOrder([FromBody] List<PlaceOrdersFrontendRequire> placeOrdersFrontendRequires)
     {
-        await _SalesOrdersService.RemoveSalesOrder(ids);
+        await _SalesOrdersService.PlaceOrder(placeOrdersFrontendRequires);
 
         return NoContent();
     }
