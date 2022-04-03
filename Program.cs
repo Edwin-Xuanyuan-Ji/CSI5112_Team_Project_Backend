@@ -13,11 +13,13 @@ builder.Services.Configure<CSI5112BackEndDataBaseSettings>(builder.Configuration
 builder.Services.AddSingleton<CustomersService>();
 builder.Services.AddSingleton<ProductsService>();
 builder.Services.AddSingleton<CartItemsService>();
+builder.Services.AddSingleton<CartItemsServer>();
 builder.Services.AddSingleton<MerchantsService>();
 builder.Services.AddSingleton<ShippingAddressService>();
 builder.Services.AddSingleton<AnswersService>();
 builder.Services.AddSingleton<QuestionsService>();
 builder.Services.AddSingleton<SalesOrdersService>();
+
 
 builder.Services.AddCors(options => {
     options.AddPolicy(name: "policy",

@@ -33,12 +33,12 @@ public class ProductsService
         
     public async Task<List<Product>> SortProductsByMerchant(string id, string input, string priceSort, string[] locations, string[] categories) {
         var sortPrice = priceSort == "ascending" ? Builders<Product>.Sort.Ascending("price") : Builders<Product>.Sort.Descending("price");
-        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.Contains(input) && x.owner_id == id).Sort(sortPrice).ToListAsync();
+        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.ToLower().Contains(input.ToLower()) && x.owner_id == id).Sort(sortPrice).ToListAsync();
     }
 
     public async Task<List<Product>> SortProductsBySearch(string input, string priceSort, string[] locations, string[] categories) {
         var sortPrice = priceSort == "ascending" ? Builders<Product>.Sort.Ascending("price") : Builders<Product>.Sort.Descending("price");
-        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.Contains(input)).Sort(sortPrice).ToListAsync();
+        return await _productsCollection.Find(x => locations.Contains(x.manufacturer) && categories.Contains(x.category) && x.name.ToLower().Contains(input.ToLower())).Sort(sortPrice).ToListAsync();
     }
 
     public async Task<List<Product>> GetProductByCategory(string category, string id) =>

@@ -22,5 +22,11 @@ public class SalesOrder
 
     public string status { get; set; } = null!;
 
+    public string name  { get; set; } = null!;
+
+    public string image { get; set; } = null!;
+
+    public int? price { get; set; } = null!;
+
     public DateTime date { get; set; }
 }

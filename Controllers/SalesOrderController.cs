@@ -47,4 +47,12 @@ public class SalesOrdersController : ControllerBase
 
         return NoContent();
     }
+
+     [HttpDelete("post")]
+    public async Task<IActionResult> PlaceOrder([FromBody] string[] ids)
+    {
+        await _SalesOrdersService.RemoveSalesOrder(ids);
+
+        return NoContent();
+    }
 }

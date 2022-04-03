@@ -38,4 +38,7 @@ public class CartItemsService
 
     public async Task RemoveCartItem(string[] id) =>
         await _cartItemsCollection.DeleteOneAsync(x => id.Contains(x.item_id));
+
+    
+
 }
