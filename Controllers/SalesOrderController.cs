@@ -24,17 +24,15 @@ public class SalesOrdersController : ControllerBase
     }
 
     [HttpPut("deliver_product")]
-    public async Task<IActionResult> DeliverProduct([FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
+    public async Task<List<SalesOrderEcho>> DeliverProduct([FromQuery] string merchant_id,[FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
     {
-        await _SalesOrdersService.DeliverProduct(order_id, merchant_shipping_address_id);
-        return NoContent();
+        return await _SalesOrdersService.DeliverProduct(merchant_id, order_id, merchant_shipping_address_id);
     }
 
     [HttpPut("recieve_product")]
-    public async Task<IActionResult> RecieveProduct([FromQuery] string order_id)
+    public async Task<List<SalesOrderEcho>> RecieveProduct([FromQuery] string customer_id, [FromQuery] string order_id)
     {
-        await _SalesOrdersService.RecieveProduct(order_id);
-        return NoContent();
+        return await _SalesOrdersService.RecieveProduct(customer_id, order_id);
     }
     
     [HttpPost("create")]

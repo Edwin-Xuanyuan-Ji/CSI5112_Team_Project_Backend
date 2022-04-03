@@ -102,7 +102,6 @@ public class ProductsController : ControllerBase
         if (newProduct.image_type == "local") {
             MemoryStream stream = new MemoryStream(Convert.FromBase64String(newProduct.image));
             var imageName = newProduct.owner_id + '_' + newProduct.product_id + ".png";
-            var file = Image.FromStream(stream);
             await _ProductsService.UploadFileAsync(stream, imageName);
             newProduct.image = "https://csi5112pics.s3.amazonaws.com/" + imageName;
             newProduct.image_type = "network";
@@ -119,7 +118,6 @@ public class ProductsController : ControllerBase
         if (updatedProduct.image_type == "local") {
             MemoryStream stream = new MemoryStream(Convert.FromBase64String(updatedProduct.image));
             var imageName = updatedProduct.owner_id + '_' + updatedProduct.product_id + ".png";
-            var file = Image.FromStream(stream);
             await _ProductsService.UploadFileAsync(stream, imageName);
             updatedProduct.image = "https://csi5112pics.s3.amazonaws.com/" + imageName;
             updatedProduct.image_type = "network";

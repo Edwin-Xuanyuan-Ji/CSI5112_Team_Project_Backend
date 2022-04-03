@@ -164,23 +164,26 @@ public class SalesOrdersService
         return new List<SalesOrderEcho>();
     }
 
-    public async Task DeliverProduct(string id, string merchant_shipping_address_id)
+    public async Task<List<SalesOrderEcho>> DeliverProduct(string merchant_id, string salesOrder_id, string merchant_shipping_address_id)
     {
-        if ((await GetSalesOrdersByID(id)).Any())
+        if ((await GetSalesOrdersByID(salesOrder_id)).Any())
         {
-            SalesOrder salesOrder = (await GetSalesOrdersByID(id))[0];
+            SalesOrder salesOrder = (await GetSalesOrdersByID(salesOrder_id))[0];
             salesOrder.merchant_shipping_address_id = merchant_shipping_address_id;
             salesOrder.status = "delivering";
-            await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == id, salesOrder);
+            await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == salesOrder_id, salesOrder);
         }
+        return await SearchSalesOrderByUserId("#", merchant_id, "Merchant");
     }
-    public async Task RecieveProduct(string id)
+    public async Task<List<SalesOrderEcho>> RecieveProduct(string customer_id, string salesOrder_id)
     {
-        if ((await GetSalesOrdersByID(id)).Any())
+        if ((await GetSalesOrdersByID(salesOrder_id)).Any())
         {
-            SalesOrder salesOrder = (await GetSalesOrdersByID(id))[0];
+            SalesOrder salesOrder = (await GetSalesOrdersByID(salesOrder_id))[0];
             salesOrder.status = "finish";
-            await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == id, salesOrder);
+            await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == salesOrder_id, salesOrder);
         }
+
+        return await SearchSalesOrderByUserId(customer_id, "#", "Customer");
     }
 }
