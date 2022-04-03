@@ -137,12 +137,12 @@ public class SalesOrdersService
                     }
                     else
                     {
-                        salesOrderEcho.merchantAddress = new ShippingAddress();
+                        salesOrderEcho.merchantAddress = new ShippingAddress{shipping_address_id = "#", address = "#", city = "#", state = "#",zipcode = "#", country = "#", user_id = "#"};
                     }
                 }
                 else
                 {
-                    salesOrderEcho.merchantAddress = new ShippingAddress();
+                        salesOrderEcho.merchantAddress = new ShippingAddress{shipping_address_id = "#", address = "#", city = "#", state = "#",zipcode = "#", country = "#", user_id = "#"};
                 }
                 if (!"".Equals(customer_shipping_address_id))
                 {
@@ -153,12 +153,12 @@ public class SalesOrdersService
                     }
                     else
                     {
-                        salesOrderEcho.customerAddress = new ShippingAddress();
+                        salesOrderEcho.customerAddress = new ShippingAddress{shipping_address_id = "#", address = "#", city = "#", state = "#",zipcode = "#", country = "#", user_id = "#"};
                     }
                 }
                 else
                 {
-                    salesOrderEcho.customerAddress = new ShippingAddress();
+                        salesOrderEcho.customerAddress = new ShippingAddress{shipping_address_id = "#", address = "#", city = "#", state = "#",zipcode = "#", country = "#", user_id = "#"};
 
                 }
 
