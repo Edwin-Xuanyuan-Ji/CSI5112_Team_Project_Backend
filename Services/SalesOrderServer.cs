@@ -9,7 +9,6 @@ public class SalesOrdersService
     private readonly IMongoCollection<SalesOrder> _salesOrdersCollection;
     private readonly CartItemsService _cartItemsService;
     private readonly ProductsService _productService;
-
     private readonly ShippingAddressService _shippingAddressService;
 
     public SalesOrdersService(
@@ -51,7 +50,6 @@ public class SalesOrdersService
 
     public async Task PlaceOrder(List<PlaceOrdersFrontendRequire> placeOrdersFrontendRequires)
     {
-
         foreach (PlaceOrdersFrontendRequire placeOrdersFrontendRequire in placeOrdersFrontendRequires)
         {
             string customer_id = placeOrdersFrontendRequire.customer_id;
@@ -104,7 +102,6 @@ public class SalesOrdersService
             else
             {
                 salesOrders = await SearchSalesOrdersByID(customer_id, merchant_id);
-
             }
         }
         else
@@ -116,7 +113,6 @@ public class SalesOrdersService
             else
             {
                 salesOrders = await SearchSalesOrdersByID(customer_id, merchant_id);
-
             }
         }
         List<SalesOrderEcho> salesOrderEchoes = new List<SalesOrderEcho>();
@@ -161,15 +157,11 @@ public class SalesOrdersService
                         salesOrderEcho.customerAddress = new ShippingAddress{shipping_address_id = "#", address = "#", city = "#", state = "#",zipcode = "#", country = "#", user_id = "#"};
 
                 }
-
                 salesOrderEchoes.Add(salesOrderEcho);
-
-
             }
             return salesOrderEchoes;
         }
         return new List<SalesOrderEcho>();
-
     }
 
     public async Task DeliverProduct(string id, string merchant_shipping_address_id)
@@ -181,8 +173,6 @@ public class SalesOrdersService
             salesOrder.status = "delivering";
             await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == id, salesOrder);
         }
-
-
     }
     public async Task RecieveProduct(string id)
     {
@@ -192,8 +182,5 @@ public class SalesOrdersService
             salesOrder.status = "finish";
             await _salesOrdersCollection.ReplaceOneAsync(x => x.order_id == id, salesOrder);
         }
-
     }
-
-
 }
