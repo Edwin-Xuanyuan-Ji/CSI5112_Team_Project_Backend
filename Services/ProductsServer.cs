@@ -72,5 +72,5 @@ public class ProductsService
     }
 
     public async Task RemoveProduct(string[] id) =>
-        await _productsCollection.DeleteOneAsync(x => id.Contains(x.product_id));
+        await _productsCollection.DeleteManyAsync(x => id.Contains(x.product_id));
 }
