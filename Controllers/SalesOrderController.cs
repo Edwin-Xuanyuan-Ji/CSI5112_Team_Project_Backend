@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
-[Authorize]
+// [Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class SalesOrdersController : ControllerBase
@@ -26,7 +26,7 @@ public class SalesOrdersController : ControllerBase
     }
 
     [HttpPut("deliver_product")]
-    public async Task<List<SalesOrderEcho>> DeliverProduct([FromQuery] string merchant_id,[FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
+    public async Task<List<SalesOrderEcho>> DeliverProduct([FromQuery] string merchant_id, [FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
     {
         return await _SalesOrdersService.DeliverProduct(merchant_id, order_id, merchant_shipping_address_id);
     }
@@ -36,7 +36,7 @@ public class SalesOrdersController : ControllerBase
     {
         return await _SalesOrdersService.RecieveProduct(customer_id, order_id);
     }
-    
+
     [HttpPost("create")]
     public async Task<IActionResult> Post(SalesOrder newSalesOrder)
     {
@@ -50,7 +50,10 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.RemoveSalesOrder(ids);
 
-        return NoContent();
+        return Ok(new 
+        {
+            message = "Delete Success"
+        });
     }
 
     [HttpPost("placeOrder")]
@@ -58,6 +61,9 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.PlaceOrder(placeOrdersFrontendRequires);
 
-        return NoContent();
+        return Ok(new
+        {
+            message = "Place Order Success"
+        });
     }
 }
