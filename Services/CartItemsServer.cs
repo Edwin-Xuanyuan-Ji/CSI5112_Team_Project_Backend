@@ -40,9 +40,9 @@ public class CartItemsService
         }
         else
         {
-            newCartItem.quantity = newCartItem.quantity + 1;
+            newCartItem.quantity = findCartItems[0].quantity + newCartItem.quantity;
             newCartItem.item_id = findCartItems[0].item_id;
-            await _cartItemsCollection.ReplaceOneAsync(x => (x.product_id == newCartItem.product_id) && (x.customer_id == newCartItem.customer_id), newCartItem);
+            await _cartItemsCollection.ReplaceOneAsync(x => x.item_id==newCartItem.item_id, newCartItem);
         }
 
     }
