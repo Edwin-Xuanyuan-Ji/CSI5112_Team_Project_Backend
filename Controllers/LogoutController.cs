@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class LogoutController: ControllerBase
