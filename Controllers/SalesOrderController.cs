@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
-// [Authorize]
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class SalesOrdersController : ControllerBase
@@ -50,10 +50,7 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.RemoveSalesOrder(ids);
 
-        return Ok(new 
-        {
-            message = "Delete Success"
-        });
+        return Ok("Delete Success");
     }
 
     [HttpPost("placeOrder")]
@@ -61,9 +58,6 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.PlaceOrder(placeOrdersFrontendRequires);
 
-        return Ok(new
-        {
-            message = "Place Order Success"
-        });
+        return Ok("Place Order Success");
     }
 }
