@@ -5,9 +5,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/token")]
 public class LoginController: ControllerBase

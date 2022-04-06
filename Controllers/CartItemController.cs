@@ -1,10 +1,11 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
-
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class CartItemsController : ControllerBase
