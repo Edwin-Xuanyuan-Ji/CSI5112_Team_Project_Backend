@@ -36,6 +36,6 @@ public class MerchantsService
     public async Task UpdateMerchant(string id, Merchant updatedMerchant) =>
         await _merchantsCollection.ReplaceOneAsync(x => x.merchant_id == id, updatedMerchant);
 
-    public async Task RemoveMerchant(string id) =>
-        await _merchantsCollection.DeleteOneAsync(x => x.merchant_id == id);
+    public async Task RemoveMerchant(string[] id) =>
+        await _merchantsCollection.DeleteManyAsync(x => id.Contains(x.merchant_id));
 }

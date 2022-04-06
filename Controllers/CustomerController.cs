@@ -49,16 +49,16 @@ public class CustomersController : ControllerBase
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromQuery]string customer_id)
+    public async Task<IActionResult> Delete([FromQuery]string customer_ids)
     {
-        var Customer = await _CustomersService.GetCustomerByID(customer_id);
+        var Customer = await _CustomersService.GetCustomerByID(customer_ids);
 
         if (Customer is null)
         {
             return NotFound();
         }
 
-        await _CustomersService.RemoveCustomer(customer_id);
+        await _CustomersService.RemoveCustomer(customer_ids.Split('_'));
 
         return NoContent();
     }

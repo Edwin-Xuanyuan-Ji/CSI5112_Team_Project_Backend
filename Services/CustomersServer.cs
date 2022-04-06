@@ -36,6 +36,6 @@ public class CustomersService
     public async Task UpdateCustomer(string id, Customer updatedCustomer) =>
         await _customersCollection.ReplaceOneAsync(x => x.customer_id == id, updatedCustomer);
 
-    public async Task RemoveCustomer(string id) =>
-        await _customersCollection.DeleteOneAsync(x => x.customer_id == id);
+    public async Task RemoveCustomer(string[] ids) =>
+        await _customersCollection.DeleteManyAsync(x => ids.Contains(x.customer_id));
 }
