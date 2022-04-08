@@ -68,7 +68,7 @@ public class SalesOrdersService
                 string name = products[0].name;
                 SalesOrder salesOrder = new SalesOrder();
                 salesOrder.customer_id = customer_id;
-                salesOrder.date = date;
+                salesOrder.date = DateTime.Now;
                 salesOrder.image = image;
                 salesOrder.merchant_id = merchant_id;
                 salesOrder.name = name;
