@@ -1,9 +1,11 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class MerchantsController : ControllerBase
@@ -47,16 +49,16 @@ public class MerchantsController : ControllerBase
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete(string merchant_id)
+    public async Task<IActionResult> Delete(string merchant_ids)
     {
-        var Merchant = await _MerchantsService.GetMerchantByID(merchant_id);
+        var Merchant = await _MerchantsService.GetMerchantByID(merchant_ids);
 
         if (Merchant is null)
         {
             return NotFound();
         }
 
-        await _MerchantsService.RemoveMerchant(merchant_id);
+        await _MerchantsService.RemoveMerchant(merchant_ids.Split('_'));
 
         return NoContent();
     }

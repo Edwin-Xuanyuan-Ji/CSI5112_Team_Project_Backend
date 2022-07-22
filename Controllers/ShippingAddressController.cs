@@ -1,9 +1,11 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class ShippingAddressController : ControllerBase
@@ -22,35 +24,32 @@ public class ShippingAddressController : ControllerBase
         await _ShippingAddressService.GetShippingAddressByID(shipping_address_id);
 
     [HttpPost("create")]
-    public async Task<IActionResult> Post(ShippingAddress newShippingAddress)
+    public async Task<List<ShippingAddress>> Post(ShippingAddress newShippingAddress)
     {
         await _ShippingAddressService.CreateNewShippingAddress(newShippingAddress);
 
-        return CreatedAtAction(nameof(Get), new { id = newShippingAddress.shipping_address_id }, newShippingAddress);
+        return await _ShippingAddressService.GetShippingAddressByUser(newShippingAddress.user_id);
     }
 
     [HttpPut("update")]
-    public async Task<IActionResult> Update([FromQuery]string id, ShippingAddress updatedShippingAddress)
+    public async Task<List<ShippingAddress>> Update([FromQuery]string id, ShippingAddress updatedShippingAddress)
     {
         var ShippingAddress = await _ShippingAddressService.GetShippingAddressByID(id);
-
-        if (ShippingAddress is null)
-        {
-            return NotFound();
-        }
 
         updatedShippingAddress.shipping_address_id = ShippingAddress[0].shipping_address_id;
 
         await _ShippingAddressService.UpdateShippingAddress(id, updatedShippingAddress);
 
-        return NoContent();
+        return await _ShippingAddressService.GetShippingAddressByUser(updatedShippingAddress.user_id);
     }
 
     [HttpDelete("delete")]
-    public async Task<IActionResult> Delete([FromBody] string[] ids)
+    public async Task<List<ShippingAddress>> Delete([FromBody] string[] ids)
     {
+        List<ShippingAddress> shippingAddress = await _ShippingAddressService.GetShippingAddressByID(ids[0]);
+        
         await _ShippingAddressService.RemoveShippingAddress(ids);
 
-        return NoContent();
+        return await _ShippingAddressService.GetShippingAddressByUser(shippingAddress[0].user_id);
     }
 }

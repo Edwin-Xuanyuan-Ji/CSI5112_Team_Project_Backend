@@ -14,13 +14,21 @@ public class SalesOrder
 
     public string merchant_id { get; set; } = null!;
 
-    public string shipping_address_id { get; set; } = null!;
+    public string customer_shipping_address_id { get; set; } = null!;
+
+    public string merchant_shipping_address_id { get; set; } = null!;
 
     public int? quantity { get; set; } = null!;
 
     public string product_id { get; set; } = null!;
 
     public string status { get; set; } = null!;
+
+    public string name  { get; set; } = null!;
+
+    public string image { get; set; } = null!;
+
+    public int? price { get; set; } = null!;
 
     public DateTime date { get; set; }
 }

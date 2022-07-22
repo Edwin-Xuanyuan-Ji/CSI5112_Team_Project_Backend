@@ -26,6 +26,9 @@ public class MerchantsService
 
     public async Task<List<Merchant>> GetMerchantByID(string id) =>
         await _merchantsCollection.Find(x => x.merchant_id == id).ToListAsync();
+    
+    public async Task<List<Merchant>> GetMerchantByUsername(string username) =>
+        await _merchantsCollection.Find(x => x.username == username).ToListAsync();
 
     public async Task CreateNewMerchant(Merchant newMerchant) =>
         await _merchantsCollection.InsertOneAsync(newMerchant);
@@ -33,6 +36,6 @@ public class MerchantsService
     public async Task UpdateMerchant(string id, Merchant updatedMerchant) =>
         await _merchantsCollection.ReplaceOneAsync(x => x.merchant_id == id, updatedMerchant);
 
-    public async Task RemoveMerchant(string id) =>
-        await _merchantsCollection.DeleteOneAsync(x => x.merchant_id == id);
+    public async Task RemoveMerchant(string[] id) =>
+        await _merchantsCollection.DeleteManyAsync(x => id.Contains(x.merchant_id));
 }

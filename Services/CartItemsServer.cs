@@ -27,12 +27,32 @@ public class CartItemsService
     public async Task<List<CartItem>> GetCartItemByID(string id) =>
         await _cartItemsCollection.Find(x => x.item_id == id).ToListAsync();
 
-    public async Task CreateNewCartItem(CartItem newCartItem) =>
-        await _cartItemsCollection.InsertOneAsync(newCartItem);
+    public async Task<List<CartItem>> GetCartItemByCustomer(string id) =>
+        await _cartItemsCollection.Find(x => x.customer_id == id).ToListAsync();
+
+    public async Task CreateNewCartItem(CartItem newCartItem)
+
+    {
+        List<CartItem> findCartItems = await _cartItemsCollection.Find(x => (x.product_id == newCartItem.product_id) && (x.customer_id == newCartItem.customer_id)).ToListAsync();
+        if (!findCartItems.Any())
+        {
+            await _cartItemsCollection.InsertOneAsync(newCartItem);
+        }
+        else
+        {
+            newCartItem.quantity = findCartItems[0].quantity + newCartItem.quantity;
+            newCartItem.item_id = findCartItems[0].item_id;
+            await _cartItemsCollection.ReplaceOneAsync(x => x.item_id==newCartItem.item_id, newCartItem);
+        }
+
+    }
 
     public async Task UpdateCartItem(string id, CartItem updatedCartItem) =>
         await _cartItemsCollection.ReplaceOneAsync(x => x.item_id == id, updatedCartItem);
 
     public async Task RemoveCartItem(string[] id) =>
         await _cartItemsCollection.DeleteOneAsync(x => id.Contains(x.item_id));
+
+
+
 }

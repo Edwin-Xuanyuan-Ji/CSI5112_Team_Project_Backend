@@ -1,9 +1,11 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CSI5112BackEndApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class SalesOrdersController : ControllerBase
@@ -17,19 +19,22 @@ public class SalesOrdersController : ControllerBase
     public async Task<List<SalesOrder>> Get() =>
         await _SalesOrdersService.GetAllSalesOrders();
 
-    [HttpGet]
-    public async Task<ActionResult<List<SalesOrder>>> Get([FromQuery]string id, [FromQuery]string role)
+    [HttpGet("search_salesOrder_by_userId")]
+    public async Task<List<SalesOrderEcho>> SearchSalesOrderByUserId([FromQuery] string customer_id, [FromQuery] string merchant_id, [FromQuery] string role)
     {
-        var salesOrder = new List<SalesOrder>();
-        if (role == "Customer") salesOrder = await _SalesOrdersService.GetSalesOrdersByCustomer(id);
-        else salesOrder = await _SalesOrdersService.GetSalesOrdersByMerchant(id);
+        return await _SalesOrdersService.SearchSalesOrderByUserId(customer_id, merchant_id, role);
+    }
 
-        if (salesOrder is null)
-        {
-            return NotFound();
-        }
+    [HttpPut("deliver_product")]
+    public async Task<List<SalesOrderEcho>> DeliverProduct([FromQuery] string merchant_id, [FromQuery] string order_id, [FromQuery] string merchant_shipping_address_id)
+    {
+        return await _SalesOrdersService.DeliverProduct(merchant_id, order_id, merchant_shipping_address_id);
+    }
 
-        return salesOrder;
+    [HttpPut("recieve_product")]
+    public async Task<List<SalesOrderEcho>> RecieveProduct([FromQuery] string customer_id, [FromQuery] string order_id)
+    {
+        return await _SalesOrdersService.RecieveProduct(customer_id, order_id);
     }
 
     [HttpPost("create")]
@@ -45,6 +50,14 @@ public class SalesOrdersController : ControllerBase
     {
         await _SalesOrdersService.RemoveSalesOrder(ids);
 
-        return NoContent();
+        return Ok("Delete Success");
+    }
+
+    [HttpPost("placeOrder")]
+    public async Task<IActionResult> PlaceOrder([FromBody] List<PlaceOrdersFrontendRequire> placeOrdersFrontendRequires)
+    {
+        await _SalesOrdersService.PlaceOrder(placeOrdersFrontendRequires);
+
+        return Ok("Place Order Success");
     }
 }

@@ -1,6 +1,9 @@
 using CSI5112BackEndApi.Models;
 using CSI5112BackEndApi.Services;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,11 +13,13 @@ builder.Services.Configure<CSI5112BackEndDataBaseSettings>(builder.Configuration
 builder.Services.AddSingleton<CustomersService>();
 builder.Services.AddSingleton<ProductsService>();
 builder.Services.AddSingleton<CartItemsService>();
+builder.Services.AddSingleton<CartItemsServer>();
 builder.Services.AddSingleton<MerchantsService>();
 builder.Services.AddSingleton<ShippingAddressService>();
 builder.Services.AddSingleton<AnswersService>();
 builder.Services.AddSingleton<QuestionsService>();
 builder.Services.AddSingleton<SalesOrdersService>();
+
 
 builder.Services.AddCors(options => {
     options.AddPolicy(name: "policy",
@@ -50,6 +55,37 @@ builder.Services.AddSwaggerGen(options => {
     });
 });
 
+ builder.Services.AddAuthentication(options => {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(options => {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidAudience = "backend",
+                ValidIssuer = "backend",
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("dd%88*377f6d&f£$$£$FdddFF33fssDG^!3"))
+            };
+
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = context =>
+                {
+                    if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                    {
+                        context.Response.Headers.Add("Token-Expired", "true");
+                    }
+                    return Task.CompletedTask;
+                }
+            };
+        });
+        
+    
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -59,6 +95,10 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseCors("policy");
+
+app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

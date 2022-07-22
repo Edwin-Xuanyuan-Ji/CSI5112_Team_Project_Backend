@@ -27,12 +27,15 @@ public class CustomersService
     public async Task<List<Customer>> GetCustomerByID(string id) =>
         await _customersCollection.Find(x => x.customer_id == id).ToListAsync();
 
+    public async Task<List<Customer>> GetCustomerByUsername(string username) =>
+        await _customersCollection.Find(x => x.username == username).ToListAsync();
+
     public async Task CreateNewCustomer(Customer newCustomer) =>
         await _customersCollection.InsertOneAsync(newCustomer);
 
     public async Task UpdateCustomer(string id, Customer updatedCustomer) =>
         await _customersCollection.ReplaceOneAsync(x => x.customer_id == id, updatedCustomer);
 
-    public async Task RemoveCustomer(string id) =>
-        await _customersCollection.DeleteOneAsync(x => x.customer_id == id);
+    public async Task RemoveCustomer(string[] ids) =>
+        await _customersCollection.DeleteManyAsync(x => ids.Contains(x.customer_id));
 }
